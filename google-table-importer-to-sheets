@@ -1,13 +1,16 @@
 function main() {
-  var sheet = createSheetAndWriteData();
+  const spreadsheet_id = 'sheet-id';
+  const doc_id = 'doc-id';
+  
+  var sheet = createAndNameNewSheet(spreadsheet_id);
   
   // Call the function to update the table data in the new sheet
-  updateTableDataInSheets(sheet);
+  updateTableDataInSheets(sheet, doc_id);
 }
 
-function createSheetAndWriteData() {
+function createAndNameNewSheet(sheet_id) {
   // Open the spreadsheet
-  var spreadsheet = SpreadsheetApp.openById('sheet-id'); 
+  var spreadsheet = SpreadsheetApp.openById(sheet_id); 
   var scriptProperties = PropertiesService.getScriptProperties();
 
   // Get the current count
@@ -30,38 +33,38 @@ function createSheetAndWriteData() {
   return sheet;
 }
 
-function updateTableDataInSheets(sheet) {
-  var doc = DocumentApp.openById('document-id');
+function updateTableDataInSheets(sheet, doc_id) {
+  var doc = DocumentApp.openById(doc_id);
   var body = doc.getBody();
   var tables = body.getTables();
-  
 
+  // add column headers to the new sheet
+  var column_headers = ['Category', 'OKR', 'Impact [1-0]', 'Confidence [1-10]', 'Ease of Implementation [1-10]', 'ICE Score [I*C*E'];
+  for (var i = 0; i < column_headers.length; i++) {
+    var range = sheet.getRange(1, i+1);
+    range.setValue(column_headers[i]);
+    range.setFontWeight('bold');  // Set the font weight to bold
+  }
+
+  // loop through all tables in the source doc, appending their data to the current sheet
+  var max_row = 1;
   for (var i = 0; i < tables.length; i++) {
     var table = tables[i];
     for (var row = 0; row < table.getNumRows(); row++) {
       for (var col = 0; col < table.getRow(row).getNumCells(); col++) {
         var cellText = table.getCell(row, col).getText();
-        console.log(row),  console.log(col)
-        console.log(cellText)
-        sheet.getRange(row+1, col+1).setValue(cellText);
-        lastColumn = col;
+        const log_id = i.toString() + row.toString() + col.toString()
+        const sheet_row = row + max_row + 1;
+        const sheet_col = col + 1;
+
+        console.log(`${log_id} Source: GDoc table #` + i.toString() + "; R" + (row+1).toString() + "C" + (col+1).toString());
+        console.log(`${log_id} Content: ` + cellText)
+        console.log(`${log_id} Destination: GSheet cell R` + sheet_row.toString() + " C" + sheet_col.toString())
+
+        sheet.getRange(sheet_row, sheet_col).setValue(cellText);
+        sheet.getRange(sheet_row, 6).setFormula(`=C${sheet_row}*D${sheet_row}*E${sheet_row}`)
       }
     }
+    max_row = max_row + table.getNumRows()
   }
-  // Set the column titles
-  var titles = ['Impact [1-0]', 'Confidence [1-10]', 'Ease of Implementation [1-10]', 'ICE Score [I*C*E'];
-   for (var i = 0; i < titles.length; i++) {
-    var range = sheet.getRange(1, lastColumn + 2 + i);
-    range.setValue(titles[i]);
-    range.setFontWeight('bold');  // Set the font weight to bold
-  }
-
-  // Set labels for the first two columns
-  var label1 = sheet.getRange(1, 1);
-  label1.setValue('Category');
-  label1.setFontWeight('bold');  // Set the font weight to bold
-
-  var label2 = sheet.getRange(1, 2);
-  label2.setValue('OKR');
-  label2.setFontWeight('bold');  // Set the font weight to bold
-  }
+}
