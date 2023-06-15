@@ -7,7 +7,7 @@ function main() {
 
 function createSheetAndWriteData() {
   // Open the spreadsheet
-  var spreadsheet = SpreadsheetApp.openById('1_Q728FDhbC-N_gIcaEmqQmiHWnIRMF2nW66_vlLa1Y8'); 
+  var spreadsheet = SpreadsheetApp.openById('sheet-id'); 
   var scriptProperties = PropertiesService.getScriptProperties();
 
   // Get the current count
@@ -31,7 +31,7 @@ function createSheetAndWriteData() {
 }
 
 function updateTableDataInSheets(sheet) {
-  var doc = DocumentApp.openById('1V_CiQ_YWAytnBSCqdd7Ro26fe1qrY8rLjvkvKQu176A');
+  var doc = DocumentApp.openById('document-id');
   var body = doc.getBody();
   var tables = body.getTables();
   
