@@ -1,8 +1,14 @@
+function main() {
+  
+  // Call the function to update the table data in the new sheet
+  updateTableDataInSheets(sheet);
+}
+
 function updateTableDataInSheets() {
-  var doc = DocumentApp.openById('document-id');
+  var doc = DocumentApp.openById('1V_CiQ_YWAytnBSCqdd7Ro26fe1qrY8rLjvkvKQu176A');
   var body = doc.getBody();
   var tables = body.getTables();
-  var spreadsheet = SpreadsheetApp.openById('sheets-id'); 
+  var spreadsheet = SpreadsheetApp.openById('1_Q728FDhbC-N_gIcaEmqQmiHWnIRMF2nW66_vlLa1Y8'); 
   var scriptProperties = PropertiesService.getScriptProperties();
 
   // Get the current count
