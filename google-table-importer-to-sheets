@@ -51,10 +51,17 @@ function updateTableDataInSheets(sheet) {
   // Set the column titles
   var titles = ['Impact [1-0]', 'Confidence [1-10]', 'Ease of Implementation [1-10]', 'ICE Score [I*C*E'];
    for (var i = 0; i < titles.length; i++) {
-    sheet.getRange(1, lastColumn + 2 + i).setValue(titles[i]);
+    var range = sheet.getRange(1, lastColumn + 2 + i);
+    range.setValue(titles[i]);
+    range.setFontWeight('bold');  // Set the font weight to bold
   }
 
   // Set labels for the first two columns
-  label1= sheet.getRange(1, 1).setValue('Category');
-  sheet.getRange(1, 2).setValue('OKR');
+  var label1 = sheet.getRange(1, 1);
+  label1.setValue('Category');
+  label1.setFontWeight('bold');  // Set the font weight to bold
+
+  var label2 = sheet.getRange(1, 2);
+  label2.setValue('OKR');
+  label2.setFontWeight('bold');  // Set the font weight to bold
   }
