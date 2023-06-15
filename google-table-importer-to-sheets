@@ -1,0 +1,37 @@
+function updateTableDataInSheets() {
+  var doc = DocumentApp.openById('document-id');
+  var body = doc.getBody();
+  var tables = body.getTables();
+  var spreadsheet = SpreadsheetApp.openById('sheets-id'); 
+  var scriptProperties = PropertiesService.getScriptProperties();
+
+  // Get the current count
+  var count = scriptProperties.getProperty('sheetCount');
+  if (count == null) {
+    // If count is not set yet, start it at 1
+    count = 1;
+  } else {
+    // Otherwise, parse it as an integer and increment it
+    count = parseInt(count) + 1;
+  }
+
+  // Store the incremented count back to the script properties
+  scriptProperties.setProperty('sheetCount', count.toString());
+
+  // Create a new sheet with the count in its name
+  var sheetName = count + '.Imported OKRs ';
+  var sheet = spreadsheet.insertSheet(sheetName);
+
+  for (var i = 0; i < tables.length; i++) {
+    var table = tables[i];
+    for (var row = 0; row < table.getNumRows(); row++) {
+      for (var col = 0; col < table.getRow(row).getNumCells(); col++) {
+        var cellText = table.getCell(row, col).getText();
+        console.log(tables[i])
+        console.log(row),  console.log(typeof(row)), console.log(col),  console.log(typeof(col))
+        console.log(cellText)
+        sheet.getRange(row+1, col+1).setValue(cellText);
+      }
+    }
+  }
+}
