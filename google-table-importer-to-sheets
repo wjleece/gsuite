@@ -1,7 +1,7 @@
 function main() {
   
   // Call the function to update the table data in the new sheet
-  updateTableDataInSheets(sheet);
+  updateTableDataInSheets();
 }
 
 function updateTableDataInSheets() {
