@@ -1,13 +1,12 @@
 function main() {
+  var sheet = createSheetAndWriteData();
   
   // Call the function to update the table data in the new sheet
-  updateTableDataInSheets();
+  updateTableDataInSheets(sheet);
 }
 
-function updateTableDataInSheets() {
-  var doc = DocumentApp.openById('1V_CiQ_YWAytnBSCqdd7Ro26fe1qrY8rLjvkvKQu176A');
-  var body = doc.getBody();
-  var tables = body.getTables();
+function createSheetAndWriteData() {
+  // Open the spreadsheet
   var spreadsheet = SpreadsheetApp.openById('1_Q728FDhbC-N_gIcaEmqQmiHWnIRMF2nW66_vlLa1Y8'); 
   var scriptProperties = PropertiesService.getScriptProperties();
 
@@ -28,13 +27,22 @@ function updateTableDataInSheets() {
   var sheetName = count + '.Imported OKRs ';
   var sheet = spreadsheet.insertSheet(sheetName);
 
+  return sheet;
+}
+
+function updateTableDataInSheets(sheet) {
+  var doc = DocumentApp.openById('1V_CiQ_YWAytnBSCqdd7Ro26fe1qrY8rLjvkvKQu176A');
+  var body = doc.getBody();
+  var tables = body.getTables();
+  
+
   for (var i = 0; i < tables.length; i++) {
     var table = tables[i];
     for (var row = 0; row < table.getNumRows(); row++) {
       for (var col = 0; col < table.getRow(row).getNumCells(); col++) {
         var cellText = table.getCell(row, col).getText();
-        console.log(tables[i])
-        console.log(row),  console.log(typeof(row)), console.log(col),  console.log(typeof(col))
+        //console.log(tables[i])
+        console.log(row),  console.log(col)
         console.log(cellText)
         sheet.getRange(row+1, col+1).setValue(cellText);
       }
