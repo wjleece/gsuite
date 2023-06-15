@@ -41,11 +41,20 @@ function updateTableDataInSheets(sheet) {
     for (var row = 0; row < table.getNumRows(); row++) {
       for (var col = 0; col < table.getRow(row).getNumCells(); col++) {
         var cellText = table.getCell(row, col).getText();
-        //console.log(tables[i])
         console.log(row),  console.log(col)
         console.log(cellText)
         sheet.getRange(row+1, col+1).setValue(cellText);
+        lastColumn = col;
       }
     }
   }
-}
+  // Set the column titles
+  var titles = ['Impact [1-0]', 'Confidence [1-10]', 'Ease of Implementation [1-10]', 'ICE Score [I*C*E'];
+   for (var i = 0; i < titles.length; i++) {
+    sheet.getRange(1, lastColumn + 2 + i).setValue(titles[i]);
+  }
+
+  // Set labels for the first two columns
+  label1= sheet.getRange(1, 1).setValue('Category');
+  sheet.getRange(1, 2).setValue('OKR');
+  }
