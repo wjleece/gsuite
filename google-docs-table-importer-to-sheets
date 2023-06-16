@@ -1,8 +1,8 @@
 function main() {
-  const spreadsheet_id = 'sheet-id';
+  const sheet_id = 'sheet-id';
   const doc_id = 'doc-id';
   
-  var sheet = createAndNameNewSheet(spreadsheet_id);
+  var sheet = createAndNameNewSheet(sheet_id);
   
   // Call the function to update the table data in the new sheet
   updateTableDataInSheets(sheet, doc_id);
